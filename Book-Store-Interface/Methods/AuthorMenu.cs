@@ -34,7 +34,7 @@ namespace Book_Store_Interface
                 switch (menuChoice)
                 {
                     case "1":
-                        //AddAuthor();
+                        AddAuthor();
                         break;
                     case "2":
                         EditAuthor();
@@ -58,25 +58,43 @@ namespace Book_Store_Interface
             }
         }
 
-        private static void ListAuthors()
+        private static void AddAuthor()
         {
+            DateOnly? parsedDate;
+            string dateInput = "2000-01-01";
             Console.Clear();
-            CenterText("Authors");
+            CenterText("Add Author");
             Console.WriteLine();
+            Console.Write("Enter author's first name: ");
+            string firstName = Console.ReadLine();
+            Console.Write("Enter author's middle initial (if any): ");
+            string middleInitial = Console.ReadLine();
+            string initial = string.IsNullOrWhiteSpace(middleInitial) ? null : middleInitial;
+            Console.Write("Enter author's last name: ");
+            string lastName = Console.ReadLine();
+            Console.Write("Enter author's birth date and year (Format YYYY-MM-DD) or NULL if unknown: ");
+            string birthDate = Console.ReadLine().ToLower();
+            parsedDate = string.IsNullOrWhiteSpace(birthDate) ? (DateOnly?)null : DateOnly.Parse(birthDate);
+            Console.Write("Is the author dead? ");
+            string isDead = Console.ReadLine();
             using (var context = new Labb1BokhandelDemoContext())
             {
-                var authors = context.Authors.ToList();
-                if (authors.Count == 0)
+                var author = new Author
                 {
-                    CenterText("No authors found.");
-                }
-                else
+                    FirstName = firstName,
+                    Initial = initial,
+                    LastName = lastName,
+                    BirthDate = parsedDate,
+                    IsDead = isDead.ToLower() == "yes" ? true : false
+                };
+                context.Authors.Add(author);
+                var booksauthor = new BooksAuthor
                 {
-                    foreach (var author in authors)
-                    {
-                        Console.WriteLine($"{author.FirstName} {author.LastName}");
-                    }
-                }
+                    AuthorsId = context.Authors.OrderBy(a => a.Id).FirstOrDefault().Id
+                };
+                context.BooksAuthors.Add(booksauthor);
+                CenterText("Author added.");
+                context.SaveChanges();
             }
         }
 
@@ -111,6 +129,27 @@ namespace Book_Store_Interface
                         default:
                             CenterText("Returning with no changes.");
                             break;
+                    }
+                }
+            }
+        }
+        private static void ListAuthors()
+        {
+            Console.Clear();
+            CenterText("Authors");
+            Console.WriteLine();
+            using (var context = new Labb1BokhandelDemoContext())
+            {
+                var authors = context.Authors.ToList();
+                if (authors.Count == 0)
+                {
+                    CenterText("No authors found.");
+                }
+                else
+                {
+                    foreach (var author in authors)
+                    {
+                        Console.WriteLine($"{author.FirstName} {author.LastName}");
                     }
                 }
             }

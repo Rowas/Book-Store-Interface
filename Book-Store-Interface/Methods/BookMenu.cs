@@ -70,6 +70,7 @@ namespace Book_Store_Interface
                 foreach (var book in books)
                 {
                     Console.WriteLine($"Title: {book.Title}");
+                    Console.WriteLine($"ISBN: {book.Isbn13}");
                     Console.WriteLine($"Publisher: {book.Publisher.Name}");
                     Console.WriteLine("Authors:");
                     foreach (var author in book.BooksAuthors)

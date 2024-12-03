@@ -7,7 +7,7 @@ internal class Program
         PrintMenu();
         Console.SetCursorPosition(Console.WindowWidth / 2, 9);
         string menuChoice = Console.ReadLine();
-        while (menuChoice != "3")
+        while (menuChoice != "4")
         {
             switch (menuChoice)
             {
@@ -16,6 +16,9 @@ internal class Program
                     break;
                 case "2":
                     BookMenu.BooksMenu();
+                    break;
+                case "3":
+                    StoreMenu.StoresMenu();
                     break;
                 default:
                     Console.WriteLine("Invalid choice. Please try again.");
@@ -35,12 +38,13 @@ internal class Program
         Console.WriteLine();
         CenterText("1. Authors");
         CenterText("2. Books");
-        CenterText("3. Exit");
+        CenterText("3. Stores");
+        CenterText("4. Exit");
         Console.WriteLine();
         CenterText("Enter your choice:");
     }
 
-    private static void CenterText(string text)
+    public static void CenterText(string text)
     {
         Console.Write(new string(' ', (Console.WindowWidth - text.Length) / 2));
         Console.WriteLine(text);
