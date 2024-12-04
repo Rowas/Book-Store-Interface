@@ -6,22 +6,10 @@ namespace Book_Store_Interface
 {
     internal class StoreMenu
     {
-        private static void StoreMenuChoices()
-        {
-            Console.Clear();
-            TextCenter.CenterText("Store Menu");
-            Console.WriteLine();
-            TextCenter.CenterText("1. Add Store Inventory");
-            TextCenter.CenterText("2. Edit Store Inventory");
-            TextCenter.CenterText("3. List Store Inventory");
-            TextCenter.CenterText("4. Back");
-            Console.WriteLine();
-            TextCenter.CenterText("Enter your choice:");
-        }
-
         public static void StoresMenu()
         {
-            StoreMenuChoices();
+            ClearConsole.ConsoleClear();
+            MenuChoices.StoreMenuChoices();
             Console.SetCursorPosition(Console.WindowWidth / 2, 8);
             string menuChoice = Console.ReadLine();
             while (menuChoice != "4")
@@ -44,7 +32,7 @@ namespace Book_Store_Interface
                 Console.WriteLine();
                 Console.WriteLine("Press any key to continue...");
                 Console.ReadKey();
-                StoreMenuChoices();
+                MenuChoices.StoreMenuChoices();
                 Console.SetCursorPosition(Console.WindowWidth / 2, 9);
                 menuChoice = Console.ReadLine();
             }
@@ -52,61 +40,81 @@ namespace Book_Store_Interface
 
         private static void AddToStoreInventory()
         {
-            ListStores();
+            ListStores.ListStore();
             Console.WriteLine();
             Console.Write("Enter store ID: ");
             int storeId = int.Parse(Console.ReadLine());
-            Console.Clear();
-            Console.WriteLine("Pick from current current range of books or add a new one?");
-            Console.WriteLine();
-            Console.WriteLine("1. Current range");
-            Console.WriteLine("2. New book");
-            Console.WriteLine("3. Back");
-            string menuChoice = Console.ReadLine();
-            while (menuChoice != "3")
-            {
-                switch (menuChoice)
-                {
-                    case "1":
-                        ListBooks();
-                        break;
-                    case "2":
-                        AddCurrentRange(storeId);
-                        break;
-                    default:
-                        Console.WriteLine("Invalid choice. Please try again.");
-                        break;
-                }
-            }
-            ListBooks();
+            ClearConsole.ConsoleClear();
+            AddToInventory(storeId);
         }
 
-        private static void AddCurrentRange(int storeId)
+        private static void AddToInventory(int storeId)
         {
-            Console.Clear();
+            ListBooks.ListBook();
             Console.WriteLine();
-            Console.Write("Enter book ISBN: ");
-            string isbn = Console.ReadLine();
-            Console.Write("Enter quantity: ");
+            Console.WriteLine("Enter ISBN from above list of books currently in Database");
+            var isbn = Console.ReadLine();
+            Console.WriteLine("Enter quantity to add: ");
             int quantity = int.Parse(Console.ReadLine());
-
+            Console.WriteLine("");
             using (var context = new Labb1BokhandelDemoContext())
             {
-                var inventory = new Inventory
+                var stores = context.Stores.Include(s => s.Inventories).Where(s => s.Id == storeId).FirstOrDefault();
+                var isbncheck = stores.Inventories.FirstOrDefault(i => i.Isbn == isbn);
+                if (isbncheck != null)
                 {
-                    StoreId = storeId,
-                    Isbn = isbn,
-                    CurrentInventory = quantity
-                };
-                context.Inventories.Add(inventory);
-                context.SaveChanges();
-                TextCenter.CenterText("Inventory added.");
+                    Console.WriteLine($"Title already in inventory, do you wish to update the inventory with the requested amount of {quantity}?");
+                    var response = Console.ReadLine();
+                    switch (response.ToLower())
+                    {
+                        case "yes":
+                            var selectedInventory = stores.Inventories.FirstOrDefault(i => i.Isbn == isbn);
+                            selectedInventory.CurrentInventory = selectedInventory.CurrentInventory + quantity;
+                            context.SaveChanges();
+                            Console.WriteLine("Inventory Updated.");
+                            break;
+                        default:
+                            Console.WriteLine("Cancelling add request.");
+                            return;
+                    }
+                }
+                else
+                {
+                    var inventory = new Inventory
+                    {
+                        StoreId = storeId,
+                        Isbn = isbn,
+                        CurrentInventory = quantity
+                    };
+                    context.Inventories.Add(inventory);
+                    context.SaveChanges();
+                    TextCenter.CenterText("Inventory added.");
+                }
+            }
+        }
+
+        private static void EditStoreInventory()
+        {
+            MenuChoices.EditStoreInventoryMenu();
+            Console.SetCursorPosition(Console.WindowWidth / 2, 8);
+            string choice = Console.ReadLine();
+            switch (choice)
+            {
+                case "1":
+                    EditStoreInventoryStock();
+                    break;
+                case "2":
+                    RemoveFromInventory();
+                    break;
+                default:
+                    Console.WriteLine("Invalid choice.");
+                    break;
             }
         }
 
         private static void ListStoresInventory()
         {
-            ListStores();
+            ListStores.ListStore();
             Console.WriteLine("Pick store to list inventory for:");
             Console.WriteLine();
             Console.Write("Enter store ID: ");
@@ -116,7 +124,7 @@ namespace Book_Store_Interface
             {
                 var stores = context.Stores.Include(s => s.Inventories).Where(s => s.Id == storeId).FirstOrDefault();
                 var books = context.Books.Include(b => b.BooksAuthors).ThenInclude(ba => ba.Authors).ToList();
-                Console.Clear();
+                ClearConsole.ConsoleClear();
                 TextCenter.CenterText("List of Store Inventory");
                 Console.WriteLine();
                 Console.WriteLine($"Store ID: {stores.Id}");
@@ -141,38 +149,9 @@ namespace Book_Store_Interface
             }
         }
 
-        private static void ListBooks()
+        private static void RemoveFromInventory()
         {
-            using (var context = new Labb1BokhandelDemoContext())
-            {
-                var books = context.Books.Include(b => b.BooksAuthors).ThenInclude(ba => ba.Authors).ToList();
-                Console.Clear();
-                TextCenter.CenterText("List of Books");
-                Console.WriteLine();
-                int x = 1;
-                int y = 0;
-                List<(string, int)> bookIDNumber = new List<(string, int)>();
-                foreach (var book in books)
-                {
-                    //bookIDNumber.Add((book.Isbn13, x));
-                    //Console.WriteLine($"Book#: {bookIDNumber.ElementAt(y).Item2}");
-                    //x++;
-                    Console.WriteLine($"Book ID: {book.Isbn13}");
-                    Console.WriteLine($"Title: {book.Title}");
-                    Console.Write("Author(s):");
-                    foreach (var author in book.BooksAuthors)
-                    {
-                        Console.WriteLine($"{author.Authors.FirstName} {author.Authors.LastName}");
-                    }
-                    Console.WriteLine($"Price: {book.Price} SEK");
-                    Console.WriteLine();
-                }
-            }
-        }
-
-        private static void EditStoreInventory()
-        {
-            ListStores();
+            ListStores.ListStore();
             Console.WriteLine();
             Console.Write("Enter store ID: ");
             int storeId = int.Parse(Console.ReadLine());
@@ -180,8 +159,53 @@ namespace Book_Store_Interface
             {
                 var stores = context.Stores.Include(s => s.Inventories).Where(s => s.Id == storeId).FirstOrDefault();
                 var books = context.Books.Include(b => b.BooksAuthors).ThenInclude(ba => ba.Authors).ToList();
-                Console.Clear();
-                TextCenter.CenterText("Edit Store Inventory");
+                ClearConsole.ConsoleClear();
+                TextCenter.CenterText("Edit Stock Levels");
+                Console.WriteLine();
+                Console.WriteLine($"Store ID: {stores.Id}");
+                Console.WriteLine($"Store Name: {stores.StoreName}");
+                Console.WriteLine($"Store Address: {stores.Address}");
+                Console.WriteLine("----------------------------");
+                Console.WriteLine();
+                Console.WriteLine("Inventory:");
+                foreach (var inventory in stores.Inventories)
+                {
+                    Console.WriteLine($"Book ID: {inventory.Isbn}");
+                    Console.Write("Author(s):");
+                    foreach (var author in books.Where(b => b.Isbn13 == inventory.Isbn).FirstOrDefault().BooksAuthors)
+                    {
+                        Console.WriteLine($"{author.Authors.FirstName} {author.Authors.LastName}");
+                    }
+                    Console.WriteLine($"Title: {books.Where(b => b.Isbn13 == inventory.Isbn).FirstOrDefault().Title}");
+                    Console.WriteLine($"Price: {books.Where(b => b.Isbn13 == inventory.Isbn).FirstOrDefault().Price} SEK");
+                    Console.WriteLine($"Author(s): {books.Where(b => b.Isbn13 == inventory.Isbn).FirstOrDefault().BooksAuthors.FirstOrDefault().Authors.FirstName} " +
+                        $"{books.Where(b => b.Isbn13 == inventory.Isbn).FirstOrDefault().BooksAuthors.FirstOrDefault().Authors.LastName}");
+                    Console.WriteLine($"Quantity: {inventory.CurrentInventory}");
+                    Console.WriteLine();
+                }
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.Write("Enter book ISBN to remove: ");
+                string isbn = Console.ReadLine();
+                var selectedItem = stores.Inventories.FirstOrDefault(i => i.Isbn == isbn);
+                context.Remove(selectedItem);
+                context.SaveChanges();
+                TextCenter.CenterText("Inventory updated.");
+            }
+        }
+
+        private static void EditStoreInventoryStock()
+        {
+            ListStores.ListStore();
+            Console.WriteLine();
+            Console.Write("Enter store ID: ");
+            int storeId = int.Parse(Console.ReadLine());
+            using (var context = new Labb1BokhandelDemoContext())
+            {
+                var stores = context.Stores.Include(s => s.Inventories).Where(s => s.Id == storeId).FirstOrDefault();
+                var books = context.Books.Include(b => b.BooksAuthors).ThenInclude(ba => ba.Authors).ToList();
+                ClearConsole.ConsoleClear();
+                TextCenter.CenterText("Edit Stock Levels");
                 Console.WriteLine();
                 Console.WriteLine($"Store ID: {stores.Id}");
                 Console.WriteLine($"Store Name: {stores.StoreName}");
@@ -214,24 +238,6 @@ namespace Book_Store_Interface
                 selectedInventory.CurrentInventory = quantity;
                 context.SaveChanges();
                 TextCenter.CenterText("Inventory updated.");
-            }
-        }
-
-        private static void ListStores()
-        {
-            using (var context = new Labb1BokhandelDemoContext())
-            {
-                var stores = context.Stores.ToList();
-                Console.Clear();
-                TextCenter.CenterText("List of Stores");
-                Console.WriteLine();
-                foreach (var store in stores)
-                {
-                    Console.WriteLine($"Store ID: {store.Id}");
-                    Console.WriteLine($"Store Name: {store.StoreName}");
-                    Console.WriteLine($"Store Address: {store.Address}");
-                    Console.WriteLine();
-                }
             }
         }
     }

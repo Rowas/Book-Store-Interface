@@ -5,23 +5,9 @@ namespace Book_Store_Interface
 {
     internal class AuthorMenu
     {
-        private static void AuthorMenuChoices()
-        {
-            ClearConsole.ConsoleClear();
-            TextCenter.CenterText("Author Menu");
-            Console.WriteLine();
-            TextCenter.CenterText("1. Add Author");
-            TextCenter.CenterText("2. Edit Author");
-            TextCenter.CenterText("3. Delete Author");
-            TextCenter.CenterText("4. List Authors");
-            TextCenter.CenterText("5. Back");
-            Console.WriteLine();
-            TextCenter.CenterText("Enter your choice:");
-        }
-
         public static void AuthorsMenu()
         {
-            AuthorMenuChoices();
+            MenuChoices.AuthorMenuChoices();
             Console.SetCursorPosition(Console.WindowWidth / 2, 9);
             string menuChoice = Console.ReadLine();
             while (menuChoice != "5")
@@ -38,7 +24,7 @@ namespace Book_Store_Interface
                         //DeleteAuthor();
                         break;
                     case "4":
-                        ListAuthors();
+                        ListAuthors.ListAuthor();
                         break;
                     default:
                         Console.WriteLine("Invalid choice. Please try again.");
@@ -47,13 +33,13 @@ namespace Book_Store_Interface
                 Console.WriteLine();
                 Console.WriteLine("Press any key to continue...");
                 Console.ReadKey();
-                AuthorMenuChoices();
+                MenuChoices.AuthorMenuChoices();
                 Console.SetCursorPosition(Console.WindowWidth / 2, 9);
                 menuChoice = Console.ReadLine();
             }
         }
 
-        private static void AddAuthor()
+        public static void AddAuthor()
         {
             DateOnly? parsedDate;
             string dateInput = "2000-01-01";
@@ -67,7 +53,7 @@ namespace Book_Store_Interface
             string initial = string.IsNullOrWhiteSpace(middleInitial) ? null : middleInitial;
             Console.Write("Enter author's last name: ");
             string lastName = Console.ReadLine();
-            Console.Write("Enter author's birth date and year (Format YYYY-MM-DD) or NULL if unknown: ");
+            Console.Write("Enter author's birth date and year (Format YYYY-MM-DD) or leave blank if unknown: ");
             string birthDate = Console.ReadLine().ToLower();
             parsedDate = string.IsNullOrWhiteSpace(birthDate) ? (DateOnly?)null : DateOnly.Parse(birthDate);
             Console.Write("Is the author dead? ");
@@ -124,27 +110,6 @@ namespace Book_Store_Interface
                         default:
                             TextCenter.CenterText("Returning with no changes.");
                             break;
-                    }
-                }
-            }
-        }
-        private static void ListAuthors()
-        {
-            ClearConsole.ConsoleClear();
-            TextCenter.CenterText("Authors");
-            Console.WriteLine();
-            using (var context = new Labb1BokhandelDemoContext())
-            {
-                var authors = context.Authors.ToList();
-                if (authors.Count == 0)
-                {
-                    TextCenter.CenterText("No authors found.");
-                }
-                else
-                {
-                    foreach (var author in authors)
-                    {
-                        Console.WriteLine($"{author.FirstName} {author.LastName}");
                     }
                 }
             }
