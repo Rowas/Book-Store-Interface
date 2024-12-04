@@ -41,8 +41,6 @@ namespace Book_Store_Interface
 
         public static void AddAuthor()
         {
-            DateOnly? parsedDate;
-            string dateInput = "2000-01-01";
             ClearConsole.ConsoleClear();
             TextCenter.CenterText("Add Author");
             Console.WriteLine();
@@ -55,7 +53,7 @@ namespace Book_Store_Interface
             string lastName = Console.ReadLine();
             Console.Write("Enter author's birth date and year (Format YYYY-MM-DD) or leave blank if unknown: ");
             string birthDate = Console.ReadLine().ToLower();
-            parsedDate = string.IsNullOrWhiteSpace(birthDate) ? (DateOnly?)null : DateOnly.Parse(birthDate);
+            DateOnly? parsedDate = string.IsNullOrWhiteSpace(birthDate) ? (DateOnly?)null : DateOnly.Parse(birthDate);
             Console.Write("Is the author dead? ");
             string isDead = Console.ReadLine();
             using (var context = new Labb1BokhandelDemoContext())

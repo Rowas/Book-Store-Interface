@@ -52,9 +52,9 @@ namespace Book_Store_Interface
         {
             ListBooks.ListBook();
             Console.WriteLine();
-            Console.WriteLine("Enter ISBN from above list of books currently in Database");
+            Console.Write("Enter ISBN from above list of books currently in Database: ");
             var isbn = Console.ReadLine();
-            Console.WriteLine("Enter quantity to add: ");
+            Console.Write("Enter quantity to add: ");
             int quantity = int.Parse(Console.ReadLine());
             Console.WriteLine("");
             using (var context = new Labb1BokhandelDemoContext())
@@ -75,10 +75,10 @@ namespace Book_Store_Interface
                             break;
                         default:
                             Console.WriteLine("Cancelling add request.");
-                            return;
+                            break;
                     }
                 }
-                else
+                else if (isbncheck != null && isbncheck.Isbn == isbn)
                 {
                     var inventory = new Inventory
                     {
@@ -89,6 +89,11 @@ namespace Book_Store_Interface
                     context.Inventories.Add(inventory);
                     context.SaveChanges();
                     TextCenter.CenterText("Inventory added.");
+                }
+                else
+                {
+                    Console.WriteLine("Book not found.");
+                    Console.WriteLine("Add it through the \"Book Menu\" before adding it to inventory.");
                 }
             }
         }
