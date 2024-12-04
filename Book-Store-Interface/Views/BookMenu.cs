@@ -1,4 +1,5 @@
-﻿using Book_Store_Interface.Model;
+﻿using Book_Store_Interface.GeneralMethods;
+using Book_Store_Interface.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace Book_Store_Interface
@@ -61,7 +62,7 @@ namespace Book_Store_Interface
 
         private static void ListBooks()
         {
-            Console.Clear();
+            ClearConsole.ConsoleClear();
             CenterText("List of Books");
             Console.WriteLine();
             using (var context = new Labb1BokhandelDemoContext())
