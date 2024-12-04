@@ -27,7 +27,7 @@ namespace Book_Store_Interface
         public static void StoresMenu()
         {
             StoreMenuChoices();
-            Console.SetCursorPosition(Console.WindowWidth / 2, 9);
+            Console.SetCursorPosition(Console.WindowWidth / 2, 8);
             string menuChoice = Console.ReadLine();
             while (menuChoice != "4")
             {
@@ -57,8 +57,8 @@ namespace Book_Store_Interface
 
         private static void ListStoresInventory()
         {
-            CenterText("Pick store to list inventory for:");
             ListStores();
+            Console.WriteLine("Pick store to list inventory for:");
             Console.WriteLine();
             Console.Write("Enter store ID: ");
             int storeId = int.Parse(Console.ReadLine());
