@@ -167,6 +167,7 @@ namespace Book_Store_Interface
             Console.WriteLine($"Store ID: {stores.Id}");
             Console.WriteLine($"Store Name: {stores.StoreName}");
             Console.WriteLine($"Store Address: {stores.Address}");
+            Console.WriteLine("----------------------------");
             Console.WriteLine();
             Console.WriteLine("Inventory:");
             foreach (var inventory in stores.Inventories)
@@ -179,6 +180,8 @@ namespace Book_Store_Interface
                 }
                 Console.WriteLine($"Title: {books.Where(b => b.Isbn13 == inventory.Isbn).FirstOrDefault().Title}");
                 Console.WriteLine($"Price: {books.Where(b => b.Isbn13 == inventory.Isbn).FirstOrDefault().Price} SEK");
+                Console.WriteLine($"Author(s): {books.Where(b => b.Isbn13 == inventory.Isbn).FirstOrDefault().BooksAuthors.FirstOrDefault().Authors.FirstName} " +
+                    $"{books.Where(b => b.Isbn13 == inventory.Isbn).FirstOrDefault().BooksAuthors.FirstOrDefault().Authors.LastName}");
                 Console.WriteLine($"Quantity: {inventory.CurrentInventory}");
                 Console.WriteLine();
             }
