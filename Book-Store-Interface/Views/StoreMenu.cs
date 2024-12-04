@@ -1,4 +1,5 @@
-﻿using Book_Store_Interface.Model;
+﻿using Book_Store_Interface.GeneralMethods;
+using Book_Store_Interface.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace Book_Store_Interface
@@ -8,20 +9,14 @@ namespace Book_Store_Interface
         private static void StoreMenuChoices()
         {
             Console.Clear();
-            CenterText("Store Menu");
+            TextCenter.CenterText("Store Menu");
             Console.WriteLine();
-            CenterText("1. Add Store Inventory");
-            CenterText("2. Edit Store Inventory");
-            CenterText("3. List Store Inventory");
-            CenterText("4. Back");
+            TextCenter.CenterText("1. Add Store Inventory");
+            TextCenter.CenterText("2. Edit Store Inventory");
+            TextCenter.CenterText("3. List Store Inventory");
+            TextCenter.CenterText("4. Back");
             Console.WriteLine();
-            CenterText("Enter your choice:");
-        }
-
-        public static void CenterText(string text)
-        {
-            Console.Write(new string(' ', (Console.WindowWidth - text.Length) / 2));
-            Console.WriteLine(text);
+            TextCenter.CenterText("Enter your choice:");
         }
 
         public static void StoresMenu()
@@ -105,7 +100,7 @@ namespace Book_Store_Interface
                 };
                 context.Inventories.Add(inventory);
                 context.SaveChanges();
-                CenterText("Inventory added.");
+                TextCenter.CenterText("Inventory added.");
             }
         }
 
@@ -122,7 +117,7 @@ namespace Book_Store_Interface
                 var stores = context.Stores.Include(s => s.Inventories).Where(s => s.Id == storeId).FirstOrDefault();
                 var books = context.Books.Include(b => b.BooksAuthors).ThenInclude(ba => ba.Authors).ToList();
                 Console.Clear();
-                CenterText("List of Store Inventory");
+                TextCenter.CenterText("List of Store Inventory");
                 Console.WriteLine();
                 Console.WriteLine($"Store ID: {stores.Id}");
                 Console.WriteLine($"Store Name: {stores.StoreName}");
@@ -152,7 +147,7 @@ namespace Book_Store_Interface
             {
                 var books = context.Books.Include(b => b.BooksAuthors).ThenInclude(ba => ba.Authors).ToList();
                 Console.Clear();
-                CenterText("List of Books");
+                TextCenter.CenterText("List of Books");
                 Console.WriteLine();
                 int x = 1;
                 int y = 0;
@@ -186,7 +181,7 @@ namespace Book_Store_Interface
                 var stores = context.Stores.Include(s => s.Inventories).Where(s => s.Id == storeId).FirstOrDefault();
                 var books = context.Books.Include(b => b.BooksAuthors).ThenInclude(ba => ba.Authors).ToList();
                 Console.Clear();
-                CenterText("Edit Store Inventory");
+                TextCenter.CenterText("Edit Store Inventory");
                 Console.WriteLine();
                 Console.WriteLine($"Store ID: {stores.Id}");
                 Console.WriteLine($"Store Name: {stores.StoreName}");
@@ -218,7 +213,7 @@ namespace Book_Store_Interface
                 var selectedInventory = stores.Inventories.FirstOrDefault(i => i.Isbn == isbn);
                 selectedInventory.CurrentInventory = quantity;
                 context.SaveChanges();
-                CenterText("Inventory updated.");
+                TextCenter.CenterText("Inventory updated.");
             }
         }
 
@@ -228,7 +223,7 @@ namespace Book_Store_Interface
             {
                 var stores = context.Stores.ToList();
                 Console.Clear();
-                CenterText("List of Stores");
+                TextCenter.CenterText("List of Stores");
                 Console.WriteLine();
                 foreach (var store in stores)
                 {

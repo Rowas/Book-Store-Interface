@@ -1,4 +1,6 @@
-﻿namespace Book_Store_Interface;
+﻿using Book_Store_Interface.GeneralMethods;
+
+namespace Book_Store_Interface;
 
 internal class Program
 {
@@ -32,21 +34,15 @@ internal class Program
 
     private static void PrintMenu()
     {
-        Console.Clear();
-        CenterText("Book Store");
-        CenterText("Main Menu");
+        ClearConsole.ConsoleClear();
+        TextCenter.CenterText("Book Store");
+        TextCenter.CenterText("Main Menu");
         Console.WriteLine();
-        CenterText("1. Authors");
-        CenterText("2. Books");
-        CenterText("3. Stores");
-        CenterText("4. Exit");
+        TextCenter.CenterText("1. Authors");
+        TextCenter.CenterText("2. Books");
+        TextCenter.CenterText("3. Stores");
+        TextCenter.CenterText("4. Exit");
         Console.WriteLine();
-        CenterText("Enter your choice:");
-    }
-
-    public static void CenterText(string text)
-    {
-        Console.Write(new string(' ', (Console.WindowWidth - text.Length) / 2));
-        Console.WriteLine(text);
+        TextCenter.CenterText("Enter your choice:");
     }
 }

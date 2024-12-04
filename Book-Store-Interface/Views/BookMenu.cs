@@ -8,22 +8,16 @@ namespace Book_Store_Interface
     {
         private static void BookMenuChoices()
         {
-            Console.Clear();
-            CenterText("Book Menu");
+            ClearConsole.ConsoleClear();
+            TextCenter.CenterText("Book Menu");
             Console.WriteLine();
-            CenterText("1. Add Book");
-            CenterText("2. Edit Book");
-            CenterText("3. Delete Book");
-            CenterText("4. List Books");
-            CenterText("5. Back");
+            TextCenter.CenterText("1. Add Book");
+            TextCenter.CenterText("2. Edit Book");
+            TextCenter.CenterText("3. Delete Book");
+            TextCenter.CenterText("4. List Books");
+            TextCenter.CenterText("5. Back");
             Console.WriteLine();
-            CenterText("Enter your choice:");
-        }
-
-        public static void CenterText(string text)
-        {
-            Console.Write(new string(' ', (Console.WindowWidth - text.Length) / 2));
-            Console.WriteLine(text);
+            TextCenter.CenterText("Enter your choice:");
         }
 
         public static void BooksMenu()
@@ -63,7 +57,7 @@ namespace Book_Store_Interface
         private static void ListBooks()
         {
             ClearConsole.ConsoleClear();
-            CenterText("List of Books");
+            TextCenter.CenterText("List of Books");
             Console.WriteLine();
             using (var context = new Labb1BokhandelDemoContext())
             {

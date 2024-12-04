@@ -1,4 +1,5 @@
-﻿using Book_Store_Interface.Model;
+﻿using Book_Store_Interface.GeneralMethods;
+using Book_Store_Interface.Model;
 
 namespace Book_Store_Interface
 {
@@ -6,22 +7,16 @@ namespace Book_Store_Interface
     {
         private static void AuthorMenuChoices()
         {
-            Console.Clear();
-            CenterText("Author Menu");
+            ClearConsole.ConsoleClear();
+            TextCenter.CenterText("Author Menu");
             Console.WriteLine();
-            CenterText("1. Add Author");
-            CenterText("2. Edit Author");
-            CenterText("3. Delete Author");
-            CenterText("4. List Authors");
-            CenterText("5. Back");
+            TextCenter.CenterText("1. Add Author");
+            TextCenter.CenterText("2. Edit Author");
+            TextCenter.CenterText("3. Delete Author");
+            TextCenter.CenterText("4. List Authors");
+            TextCenter.CenterText("5. Back");
             Console.WriteLine();
-            CenterText("Enter your choice:");
-        }
-
-        public static void CenterText(string text)
-        {
-            Console.Write(new string(' ', (Console.WindowWidth - text.Length) / 2));
-            Console.WriteLine(text);
+            TextCenter.CenterText("Enter your choice:");
         }
 
         public static void AuthorsMenu()
@@ -62,8 +57,8 @@ namespace Book_Store_Interface
         {
             DateOnly? parsedDate;
             string dateInput = "2000-01-01";
-            Console.Clear();
-            CenterText("Add Author");
+            ClearConsole.ConsoleClear();
+            TextCenter.CenterText("Add Author");
             Console.WriteLine();
             Console.Write("Enter author's first name: ");
             string firstName = Console.ReadLine();
@@ -93,15 +88,15 @@ namespace Book_Store_Interface
                     AuthorsId = context.Authors.OrderBy(a => a.Id).FirstOrDefault().Id
                 };
                 context.BooksAuthors.Add(booksauthor);
-                CenterText("Author added.");
+                TextCenter.CenterText("Author added.");
                 context.SaveChanges();
             }
         }
 
         private static void EditAuthor()
         {
-            Console.Clear();
-            CenterText("Edit Author");
+            ClearConsole.ConsoleClear();
+            TextCenter.CenterText("Edit Author");
             Console.WriteLine();
             Console.Write("Enter author's first name: ");
             string firstName = Console.ReadLine();
@@ -112,7 +107,7 @@ namespace Book_Store_Interface
                 var author = context.Authors.FirstOrDefault(a => a.FirstName == firstName && a.LastName == lastName);
                 if (author == null)
                 {
-                    CenterText("Author not found.");
+                    TextCenter.CenterText("Author not found.");
                 }
                 else
                 {
@@ -124,10 +119,10 @@ namespace Book_Store_Interface
                         case "yes":
                             author.IsDead = !author.IsDead;
                             context.SaveChanges();
-                            CenterText("Author updated.");
+                            TextCenter.CenterText("Author updated.");
                             break;
                         default:
-                            CenterText("Returning with no changes.");
+                            TextCenter.CenterText("Returning with no changes.");
                             break;
                     }
                 }
@@ -135,15 +130,15 @@ namespace Book_Store_Interface
         }
         private static void ListAuthors()
         {
-            Console.Clear();
-            CenterText("Authors");
+            ClearConsole.ConsoleClear();
+            TextCenter.CenterText("Authors");
             Console.WriteLine();
             using (var context = new Labb1BokhandelDemoContext())
             {
                 var authors = context.Authors.ToList();
                 if (authors.Count == 0)
                 {
-                    CenterText("No authors found.");
+                    TextCenter.CenterText("No authors found.");
                 }
                 else
                 {

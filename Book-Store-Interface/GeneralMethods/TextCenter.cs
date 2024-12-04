@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Book_Store_Interface.GeneralMethods
+﻿namespace Book_Store_Interface.GeneralMethods
 {
     internal class TextCenter
     {
+        public static void CenterText(string text)
+        {
+            Console.Write(new string(' ', (Console.WindowWidth - text.Length) / 2));
+            Console.WriteLine(text);
+        }
     }
 }
