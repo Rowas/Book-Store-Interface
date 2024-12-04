@@ -13,6 +13,10 @@ namespace Book_Store_Interface.GeneralMethods
             using (var context = new Labb1BokhandelDemoContext())
             {
                 var books = context.Books.Include(b => b.Publisher).Include(b => b.BooksAuthors).ThenInclude(ba => ba.Authors).ToList();
+                if (books.Count == 0)
+                {
+                    TextCenter.CenterText("No books found.");
+                }
                 foreach (var book in books)
                 {
                     Console.WriteLine($"Title: {book.Title}");

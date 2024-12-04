@@ -1,4 +1,5 @@
 ﻿using Book_Store_Interface.GeneralMethods;
+using Book_Store_Interface.Model;
 
 namespace Book_Store_Interface
 {
@@ -20,7 +21,7 @@ namespace Book_Store_Interface
                         //EditBook();
                         break;
                     case "3":
-                        //DeleteBook();
+                        DeleteBook();
                         break;
                     case "4":
                         ListBooks.ListBook();
@@ -38,7 +39,30 @@ namespace Book_Store_Interface
             }
         }
 
+        private static void DeleteBook()
+        {
+            ClearConsole.ConsoleClear();
+            Console.WriteLine("Delete Book");
+            ListBooks.ListBook();
+            Console.Write("Enter book ISBN to remove: ");
+            string isbn = Console.ReadLine();
+            using (var context = new Labb1BokhandelDemoContext())
+            {
+                var books = context.Books.ToList();
+                var selectedItem = books.Where(b => b.Isbn13 == isbn).FirstOrDefault();
+                if (selectedItem == null)
+                {
+                    Console.WriteLine("Book not found.");
+                }
+                else
+                {
+                    context.Remove(selectedItem);
+                    context.SaveChanges();
+                    Console.WriteLine($"Book {selectedItem.Title} ({selectedItem.Isbn13}) have been removed.");
+                }
+            }
 
+        }
 
         //private static void AddNewBook(int storeId)
         //{

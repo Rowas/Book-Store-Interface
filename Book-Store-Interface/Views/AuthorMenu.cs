@@ -21,7 +21,7 @@ namespace Book_Store_Interface
                         EditAuthor();
                         break;
                     case "3":
-                        //DeleteAuthor();
+                        DeleteAuthor();
                         break;
                     case "4":
                         ListAuthors.ListAuthor();
@@ -81,6 +81,7 @@ namespace Book_Store_Interface
         {
             ClearConsole.ConsoleClear();
             TextCenter.CenterText("Edit Author");
+            ListAuthors.ListAuthor();
             Console.WriteLine();
             Console.Write("Enter author's first name: ");
             string firstName = Console.ReadLine();
@@ -111,6 +112,11 @@ namespace Book_Store_Interface
                     }
                 }
             }
+        }
+
+        private static void DeleteAuthor()
+        {
+
         }
     }
 }
