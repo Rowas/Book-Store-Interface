@@ -63,7 +63,6 @@
             Console.WriteLine();
             TextCenter.CenterText("1. Edit Stock Levels");
             TextCenter.CenterText("2. Remove from Inventory");
-            TextCenter.CenterText("3. Back");
             Console.WriteLine();
             TextCenter.CenterText("Enter your choice:");
         }
