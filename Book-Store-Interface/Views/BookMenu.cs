@@ -15,7 +15,7 @@ namespace Book_Store_Interface
                 switch (menuChoice)
                 {
                     case "1":
-                        //AddBook();
+                        AddNewBook();
                         break;
                     case "2":
                         //EditBook();
@@ -64,68 +64,113 @@ namespace Book_Store_Interface
 
         }
 
-        //private static void AddNewBook(int storeId)
-        //{
-        //    ClearConsole.ConsoleClear();
-        //    Console.WriteLine();
-        //    Console.Write("Enter book ISBN: ");
-        //    string isbn = Console.ReadLine();
-        //    Console.WriteLine("Enter Title: ");
-        //    string title = Console.ReadLine();
-        //    Console.WriteLine("Is the author in the database?");
-        //    Console.WriteLine("1. Yes");
-        //    Console.WriteLine("2. No");
-        //    int response = int.Parse(Console.ReadLine());
-        //    while (response != 0)
-        //    {
-        //        switch (response)
-        //        {
-        //            case 1:
-        //                AuthorMenu.ListAuthors();
-        //                Console.WriteLine("Enter Author first and last name (without middle initial): ");
-        //                string authorNameDB = Console.ReadLine();
-        //                string[] aNameArrayDB = authorNameDB.Split(" ");
-        //                string aFirstNameDB = aNameArrayDB[0];
-        //                string aLastNameDB = aNameArrayDB[1];
-        //                response = 0;
-        //                break;
-        //            case 2:
-        //                //Console.WriteLine("Enter Author first and last name (without middle initial): ");
-        //                //string authorName = Console.ReadLine();
-        //                //string[] aNameArray = authorName.Split(" ");
-        //                //string aFirstName = aNameArray[0];
-        //                //string aLastName = aNameArray[1];
-        //                //Console.WriteLine("If the author have a middle initial, enter it now ( or leave blank ): ");
-        //                //string middleInitial = Console.ReadLine();
-        //                //string initial = string.IsNullOrWhiteSpace(middleInitial) ? null : middleInitial;
-        //                //Console.WriteLine("Enter author birthday (Format: YYYY-MM-DD) or leave blank if unknown: ");
-        //                //string birthDate = Console.ReadLine().ToLower();
-        //                //DateOnly? parsedDate = string.IsNullOrWhiteSpace(birthDate) ? (DateOnly?)null : DateOnly.Parse(birthDate);
-        //                //Console.WriteLine("Is the author dead?");
-        //                AuthorMenu.AddAuthor();
-        //                response = 0;
-        //                break;
-        //            default:
-        //                Console.WriteLine("Invalid choice, try again.");
-        //                break;
-        //        }
-        //    }
-        //    Console.WriteLine("Enter year the book was published");
-        //    Console.Write("Enter quantity: ");
-        //    int quantity = int.Parse(Console.ReadLine());
+        private static void AddNewBook()
+        {
+            Console.WriteLine("Add new book");
+            Console.WriteLine();
+            Console.Write("Enter ISBN for the new book ( Format: ISBN13, no dashes ): ");
+            string isbn = Console.ReadLine();
+            Console.Write("Enter Title for the new book: ");
+            string title = Console.ReadLine();
+            Console.Write("Enter language of the book: ");
+            string language = Console.ReadLine();
+            Console.Write("Enter the price for the new book: ");
+            int price = int.Parse(Console.ReadLine());
+            Console.Write("Enter the year the book was published: ");
+            int publishyear = int.Parse(Console.ReadLine());
+            Console.Write("Is the book part of a series? ");
+            string isSeries = Console.ReadLine();
+            string series;
+            string? seriesPart;
+            switch (isSeries.ToLower())
+            {
+                case "yes":
+                    Console.Write("Enter name of the series: ");
+                    series = Console.ReadLine();
+                    Console.Write("Enter the number in the series: ");
+                    seriesPart = Console.ReadLine();
+                    break;
+                default:
+                    series = null;
+                    seriesPart = null;
+                    break;
+            }
+            ListAuthors.ListAuthor();
+            Console.WriteLine();
+            Console.Write("Enter name of the author from the list above (Format: Firstname Lastname): ");
+            string bookAuthor = Console.ReadLine();
+            string[] authorName = bookAuthor.Split(" ");
+            ListPublishers.ListPublisher();
+            Console.WriteLine();
+            Console.Write("Enter name of the Publisher from above list (if not in list, leave blank): ");
+            string publisher = Console.ReadLine();
+            using (var context = new Labb1BokhandelDemoContext())
+            {
+                int pubID;
+                var foundPublisher = context.Publishers.Where(p => p.Name == publisher).FirstOrDefault();
+                if (foundPublisher != null)
+                {
+                    pubID = foundPublisher.PubId;
+                }
+                else
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Publisher not found or left blank. Setting default.");
+                    Console.WriteLine("Press any key to continue...");
+                    Console.ReadKey();
+                    pubID = 1;
+                }
 
-        //    using (var context = new Labb1BokhandelDemoContext())
-        //    {
-        //        var inventory = new Inventory
-        //        {
-        //            StoreId = storeId,
-        //            Isbn = isbn,
-        //            CurrentInventory = quantity
-        //        };
-        //        context.Inventories.Add(inventory);
-        //        context.SaveChanges();
-        //        TextCenter.CenterText("Inventory added.");
-        //    }
-        //}
+                var book = new Book
+                {
+                    Isbn13 = isbn,
+                    Title = title,
+                    Language = language,
+                    Price = price,
+                    PublishYear = publishyear,
+                    Series = series,
+                    SeriesPart = string.IsNullOrWhiteSpace(seriesPart) ? (int?)null : int.Parse(seriesPart),
+                    PublisherId = pubID,
+                };
+
+                var foundAuthor = context.Authors.Where(a => a.FirstName == authorName[0] && a.LastName == authorName[1]).FirstOrDefault();
+                if (foundAuthor != null && foundAuthor.FirstName == authorName[0] && foundAuthor.LastName == authorName[1])
+                {
+                    var booksAuthor = context.BooksAuthors.Where(ba => ba.BooksId == null && ba.AuthorsId == foundAuthor.Id).FirstOrDefault();
+                    if (booksAuthor == null)
+                    {
+                        var authorsBook = new BooksAuthor
+                        {
+                            BooksAuthorsId = default,
+                            AuthorsId = foundAuthor.Id,
+                            BooksId = isbn
+                        };
+                        context.Add(authorsBook);
+                    }
+                    else
+                    {
+                        booksAuthor.BooksId = isbn;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Author not found, or no author entered.");
+                    Console.WriteLine("Press any key to continue...");
+                    int? id = null;
+                    var booksAuthor = new BooksAuthor
+                    {
+                        BooksAuthorsId = default,
+                        AuthorsId = (int)id,
+                        BooksId = isbn
+                    };
+                    context.Add(booksAuthor);
+                }
+                context.Add(book);
+                Console.WriteLine();
+                Console.WriteLine("Book Added.");
+                context.SaveChanges();
+            }
+        }
     }
 }

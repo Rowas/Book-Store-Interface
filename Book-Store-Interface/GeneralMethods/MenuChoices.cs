@@ -11,7 +11,8 @@
             TextCenter.CenterText("1. Authors");
             TextCenter.CenterText("2. Books");
             TextCenter.CenterText("3. Stores");
-            TextCenter.CenterText("4. Exit");
+            TextCenter.CenterText("4. Publishers");
+            TextCenter.CenterText("5. Exit");
             Console.WriteLine();
             TextCenter.CenterText("Enter your choice:");
         }
@@ -65,6 +66,17 @@
             TextCenter.CenterText("2. Remove from Inventory");
             Console.WriteLine();
             TextCenter.CenterText("Enter your choice:");
+        }
+
+        public static void PublisherMenuChoices()
+        {
+            ClearConsole.ConsoleClear();
+            TextCenter.CenterText("Publisher Menu");
+            Console.WriteLine();
+            TextCenter.CenterText("1. Add Publisher");
+            TextCenter.CenterText("1. Edit Publisher");
+            TextCenter.CenterText("1. Delete Publisher");
+            TextCenter.CenterText("4. Back");
         }
     }
 }

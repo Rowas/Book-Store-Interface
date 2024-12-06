@@ -1,4 +1,5 @@
 ﻿using Book_Store_Interface.GeneralMethods;
+using Book_Store_Interface.Views;
 
 namespace Book_Store_Interface;
 
@@ -7,9 +8,9 @@ internal class Program
     private static void Main(string[] args)
     {
         MenuChoices.PrintMenu();
-        Console.SetCursorPosition(Console.WindowWidth / 2, 9);
+        Console.SetCursorPosition(Console.WindowWidth / 2, 10);
         string menuChoice = Console.ReadLine();
-        while (menuChoice != "4")
+        while (menuChoice != "5")
         {
             switch (menuChoice)
             {
@@ -22,12 +23,15 @@ internal class Program
                 case "3":
                     StoreMenu.StoresMenu();
                     break;
+                case "4":
+                    PublisherMenu.PublishersMenu();
+                    break;
                 default:
                     Console.WriteLine("Invalid choice. Please try again.");
                     break;
             }
             MenuChoices.PrintMenu();
-            Console.SetCursorPosition(Console.WindowWidth / 2, 9);
+            Console.SetCursorPosition(Console.WindowWidth / 2, 10);
             menuChoice = Console.ReadLine();
         }
     }

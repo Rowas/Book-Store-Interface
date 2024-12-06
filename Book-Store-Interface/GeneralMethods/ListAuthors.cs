@@ -7,7 +7,7 @@ namespace Book_Store_Interface.GeneralMethods
         public static void ListAuthor()
         {
             ClearConsole.ConsoleClear();
-            TextCenter.CenterText("Authors");
+            TextCenter.CenterText("List of Authors");
             Console.WriteLine();
             using (var context = new Labb1BokhandelDemoContext())
             {
