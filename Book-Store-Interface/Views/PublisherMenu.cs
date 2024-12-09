@@ -7,9 +7,35 @@ namespace Book_Store_Interface.Views
         public static void PublishersMenu()
         {
             ClearConsole.ConsoleClear();
-            TextCenter.CenterText("Not implemented yet.");
-            TextCenter.CenterText("Press any key to continue...");
-            Console.ReadKey();
+            MenuChoices.PublisherMenuChoices();
+            Console.SetCursorPosition(Console.WindowWidth / 2, 9);
+            string menuChoice = Console.ReadLine();
+            while (menuChoice != "5")
+            {
+                switch (menuChoice)
+                {
+                    case "1":
+                        //AddToStoreInventory();
+                        break;
+                    case "2":
+                        //EditStoreInventory();
+                        break;
+                    case "3":
+                    //DeletePublisher();
+                    case "4":
+                        ListPublishers.ListPublisher();
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice. Please try again.");
+                        break;
+                }
+                Console.WriteLine();
+                Console.WriteLine("Press any key to continue...");
+                Console.ReadKey();
+                MenuChoices.PublisherMenuChoices();
+                Console.SetCursorPosition(Console.WindowWidth / 2, 9);
+                menuChoice = Console.ReadLine();
+            }
         }
     }
 }

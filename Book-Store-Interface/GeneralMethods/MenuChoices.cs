@@ -52,7 +52,8 @@
             TextCenter.CenterText("1. Add Store Inventory");
             TextCenter.CenterText("2. Edit Store Inventory");
             TextCenter.CenterText("3. List Store Inventory");
-            TextCenter.CenterText("4. Back");
+            TextCenter.CenterText("4. List Stores Information");
+            TextCenter.CenterText("5. Back");
             Console.WriteLine();
             TextCenter.CenterText("Enter your choice:");
         }
@@ -74,9 +75,12 @@
             TextCenter.CenterText("Publisher Menu");
             Console.WriteLine();
             TextCenter.CenterText("1. Add Publisher");
-            TextCenter.CenterText("1. Edit Publisher");
-            TextCenter.CenterText("1. Delete Publisher");
-            TextCenter.CenterText("4. Back");
+            TextCenter.CenterText("2. Edit Publisher");
+            TextCenter.CenterText("3. Delete Publisher");
+            TextCenter.CenterText("4. List Publishers");
+            TextCenter.CenterText("5. Back");
+            Console.WriteLine();
+            TextCenter.CenterText("Enter your choice:");
         }
     }
 }

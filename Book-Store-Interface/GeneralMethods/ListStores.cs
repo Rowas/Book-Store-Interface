@@ -17,6 +17,7 @@ namespace Book_Store_Interface.GeneralMethods
                     Console.WriteLine($"Store ID: {store.Id}");
                     Console.WriteLine($"Store Name: {store.StoreName}");
                     Console.WriteLine($"Store Address: {store.Address}");
+                    Console.WriteLine($"Store Contact Number: {store.ContactNumber}");
                     Console.WriteLine();
                 }
             }

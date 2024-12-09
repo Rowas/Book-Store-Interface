@@ -11,6 +11,7 @@ namespace Book_Store_Interface.GeneralMethods
             Console.WriteLine();
             using (var context = new Labb1BokhandelDemoContext())
             {
+                int x = 1;
                 var publishers = context.Publishers.ToList();
                 if (publishers.Count == 0)
                 {
@@ -20,7 +21,7 @@ namespace Book_Store_Interface.GeneralMethods
                 {
                     foreach (var publisher in publishers)
                     {
-                        Console.WriteLine($"{publisher.Name}");
+                        Console.WriteLine($"{x++}. {publisher.Name}");
                     }
                 }
             }

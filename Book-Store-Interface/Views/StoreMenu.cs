@@ -12,7 +12,7 @@ namespace Book_Store_Interface
             MenuChoices.StoreMenuChoices();
             Console.SetCursorPosition(Console.WindowWidth / 2, 8);
             string menuChoice = Console.ReadLine();
-            while (menuChoice != "4")
+            while (menuChoice != "5")
             {
                 switch (menuChoice)
                 {
@@ -24,6 +24,9 @@ namespace Book_Store_Interface
                         break;
                     case "3":
                         ListStoresInventory();
+                        break;
+                    case "4":
+                        ListStores.ListStore();
                         break;
                     default:
                         Console.WriteLine("Invalid choice. Please try again.");

@@ -67,11 +67,6 @@ namespace Book_Store_Interface
                     IsDead = isDead.ToLower() == "yes" ? true : false
                 };
                 context.Authors.Add(author);
-                var booksauthor = new BooksAuthor
-                {
-                    AuthorsId = context.Authors.OrderBy(a => a.Id).FirstOrDefault().Id
-                };
-                context.BooksAuthors.Add(booksauthor);
                 TextCenter.CenterText("Author added.");
                 context.SaveChanges();
             }
