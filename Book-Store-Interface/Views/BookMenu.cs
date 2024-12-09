@@ -161,10 +161,10 @@ namespace Book_Store_Interface
                 MenuChoices.EditBookMenu();
                 Console.WriteLine();
                 Console.SetCursorPosition(Console.WindowWidth / 2, 10);
-                int choice = int.Parse(Console.ReadLine());
+                string choice = Console.ReadLine();
                 switch (choice)
                 {
-                    case 1:
+                    case "1":
                         Console.WriteLine();
                         ListPublishers.ListPublisher();
                         Console.WriteLine($"Current Publisher: {context.Publishers.Find(book.PublisherId).Name}");
@@ -172,7 +172,7 @@ namespace Book_Store_Interface
                         int pubID = int.Parse(Console.ReadLine());
                         book.PublisherId = pubID;
                         break;
-                    case 2:
+                    case "2":
                         Console.WriteLine();
                         Console.WriteLine($"Edit price of {book.Title}");
                         Console.WriteLine($"Current price: {book.Price}");
@@ -180,7 +180,7 @@ namespace Book_Store_Interface
                         int newPrice = int.Parse(Console.ReadLine());
                         book.Price = newPrice;
                         break;
-                    case 3:
+                    case "3":
                         Console.WriteLine();
                         Console.WriteLine($"Add author to book {book.Title}");
                         Console.WriteLine();
@@ -204,7 +204,7 @@ namespace Book_Store_Interface
                             context.BooksAuthors.Add(authorbook);
                         }
                         break;
-                    case 4:
+                    case "4":
                         Console.WriteLine();
                         Console.WriteLine($"Add author to book {book.Title}");
                         Console.WriteLine();
@@ -214,6 +214,7 @@ namespace Book_Store_Interface
                         var removeBookAuthor = context.BooksAuthors.FirstOrDefault(ba => ba.BooksId == isbn && ba.AuthorsId == raID);
                         if (removeBookAuthor == null)
                         {
+                            Console.WriteLine();
                             Console.WriteLine($"Author not associated with {book.Title}. ");
                             Console.WriteLine("Returning with no changes made. ");
                             return;
@@ -226,18 +227,17 @@ namespace Book_Store_Interface
                                 Console.WriteLine($"No Author(s) associated with {book.Title}.");
                                 Console.WriteLine("Consider adding an author.");
                             }
-                            Console.WriteLine("Book updated. ");
                         }
                         break;
                     default:
                         Console.WriteLine("Invalid choice. ");
                         Console.WriteLine("Returning with no changes made. ");
-                        Console.WriteLine("Press any key to continue... ");
-                        Console.ReadKey();
                         return;
 
 
                 }
+                Console.WriteLine();
+                Console.WriteLine("Book updated. ");
                 context.SaveChanges();
             }
         }
