@@ -10,7 +10,7 @@ namespace Book_Store_Interface
         {
             ClearConsole.ConsoleClear();
             MenuChoices.StoreMenuChoices();
-            Console.SetCursorPosition(Console.WindowWidth / 2, 8);
+            Console.SetCursorPosition(Console.WindowWidth / 2, 9);
             string menuChoice = Console.ReadLine();
             while (menuChoice != "5")
             {
@@ -116,7 +116,8 @@ namespace Book_Store_Interface
                     break;
                 default:
                     Console.WriteLine("Invalid choice.");
-                    break;
+                    Console.WriteLine("Returning with no changes made.");
+                    return;
             }
         }
 
@@ -148,12 +149,12 @@ namespace Book_Store_Interface
                 {
                     Console.WriteLine($"Book ID: {inventory.Isbn}");
                     Console.Write("Author(s):");
-                    foreach (var author in books.Where(b => b.Isbn13 == inventory.Isbn).FirstOrDefault().BooksAuthors)
+                    foreach (var author in books.Find(b => b.Isbn13 == inventory.Isbn).BooksAuthors)
                     {
                         Console.WriteLine($"{author.Authors.FirstName} {author.Authors.LastName}");
                     }
-                    Console.WriteLine($"Title: {books.Where(b => b.Isbn13 == inventory.Isbn).FirstOrDefault().Title}");
-                    Console.WriteLine($"Price: {books.Where(b => b.Isbn13 == inventory.Isbn).FirstOrDefault().Price} SEK");
+                    Console.WriteLine($"Title: {books.Find(b => b.Isbn13 == inventory.Isbn).Title}");
+                    Console.WriteLine($"Price: {books.Find(b => b.Isbn13 == inventory.Isbn).Price}");
                     Console.WriteLine($"Quantity: {inventory.CurrentInventory}");
                     Console.WriteLine();
                 }

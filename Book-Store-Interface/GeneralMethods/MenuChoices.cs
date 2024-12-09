@@ -74,10 +74,24 @@
             ClearConsole.ConsoleClear();
             TextCenter.CenterText("Publisher Menu");
             Console.WriteLine();
-            TextCenter.CenterText("1. Add Publisher");
+            TextCenter.CenterText("1. Change Publisher");
             TextCenter.CenterText("2. Edit Publisher");
             TextCenter.CenterText("3. Delete Publisher");
             TextCenter.CenterText("4. List Publishers");
+            TextCenter.CenterText("5. Back");
+            Console.WriteLine();
+            TextCenter.CenterText("Enter your choice:");
+        }
+
+        public static void EditBookMenu()
+        {
+            ClearConsole.ConsoleClear();
+            TextCenter.CenterText("Edit Book");
+            Console.WriteLine();
+            TextCenter.CenterText("1. Change Publisher");
+            TextCenter.CenterText("2. Change Price");
+            TextCenter.CenterText("3. Add Author to book");
+            TextCenter.CenterText("4. Remove Author from book");
             TextCenter.CenterText("5. Back");
             Console.WriteLine();
             TextCenter.CenterText("Enter your choice:");
