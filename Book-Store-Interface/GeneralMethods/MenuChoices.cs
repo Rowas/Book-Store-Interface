@@ -92,7 +92,8 @@
             TextCenter.CenterText("2. Change Price");
             TextCenter.CenterText("3. Add Author to book");
             TextCenter.CenterText("4. Remove Author from book");
-            TextCenter.CenterText("5. Back");
+            TextCenter.CenterText("5. Change active book");
+            TextCenter.CenterText("6. Back");
             Console.WriteLine();
             TextCenter.CenterText("Enter your choice:");
         }
