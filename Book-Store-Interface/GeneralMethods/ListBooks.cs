@@ -22,6 +22,7 @@ namespace Book_Store_Interface.GeneralMethods
                     Console.WriteLine($"Title: {book.Title}");
                     Console.WriteLine($"ISBN: {book.Isbn13}");
                     Console.WriteLine($"Publisher: {book.Publisher.Name}");
+                    Console.WriteLine($"Current Price: {book.Price} SEK");
                     Console.WriteLine("Authors:");
                     foreach (var author in book.BooksAuthors)
                     {

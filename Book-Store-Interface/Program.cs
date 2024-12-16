@@ -26,10 +26,15 @@ internal class Program
                 case "4":
                     PublisherMenu.PublishersMenu();
                     break;
+                case "5":
+                    break;
                 default:
                     Console.WriteLine("Invalid choice. Please try again.");
                     break;
             }
+            Console.WriteLine();
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
             MenuChoices.PrintMenu();
             Console.SetCursorPosition(Console.WindowWidth / 2, 10);
             menuChoice = Console.ReadLine();

@@ -31,6 +31,8 @@ namespace Book_Store_Interface
                         break;
                 }
                 Console.WriteLine();
+                Console.WriteLine("Press any key to continue...");
+                Console.ReadKey();
                 MenuChoices.BookMenuChoices();
                 Console.SetCursorPosition(Console.WindowWidth / 2, 9);
                 menuChoice = Console.ReadLine();
@@ -55,6 +57,7 @@ namespace Book_Store_Interface
                     Console.WriteLine("Use \"Author Menu\" to add the Author before adding a new book");
                     return;
                 }
+                //----------------------------------------------------------------------------------------------------------
                 Console.WriteLine();
                 Console.Write("Enter ISBN for the new book ( Format: ISBN13, no dashes ): ");
                 string isbn = Console.ReadLine();
@@ -155,9 +158,11 @@ namespace Book_Store_Interface
                             Console.WriteLine();
                             ListPublishers.ListPublisher();
                             Console.WriteLine($"Current Publisher: {context.Publishers.Find(selectedBook.PublisherId).Name}");
+                            context.Attach(selectedBook);
                             Console.Write("Enter new Publisher ID from list above: ");
                             int pubID = int.Parse(Console.ReadLine());
                             selectedBook.PublisherId = pubID;
+                            context.Entry(selectedBook).Property("PublisherID").IsModified = true;
                             Console.WriteLine();
                             Console.WriteLine("Book updated. ");
                             context.SaveChanges();
@@ -169,9 +174,11 @@ namespace Book_Store_Interface
                             Console.WriteLine();
                             Console.WriteLine($"Edit price of {selectedBook.Title}");
                             Console.WriteLine($"Current price: {selectedBook.Price}");
+                            context.Attach(selectedBook);
                             Console.Write("Enter new price: ");
                             int newPrice = int.Parse(Console.ReadLine());
                             selectedBook.Price = newPrice;
+                            context.Entry(selectedBook).Property("Price").IsModified = true;
                             Console.WriteLine();
                             Console.WriteLine("Book updated. ");
                             context.SaveChanges();
@@ -237,9 +244,6 @@ namespace Book_Store_Interface
                             Console.WriteLine("Book updated. ");
                             context.SaveChanges();
                         }
-                        break;
-                    case "5":
-                        Console.WriteLine("Test Text Response");
                         break;
                     default:
                         Console.WriteLine("Invalid choice. Please try again.");

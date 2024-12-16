@@ -31,6 +31,8 @@ namespace Book_Store_Interface
                         break;
                 }
                 Console.WriteLine();
+                Console.WriteLine("Press any key to continue...");
+                Console.ReadKey();
                 MenuChoices.AuthorMenuChoices();
                 Console.SetCursorPosition(Console.WindowWidth / 2, 9);
                 menuChoice = Console.ReadLine();

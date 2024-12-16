@@ -33,6 +33,8 @@ namespace Book_Store_Interface
                         break;
                 }
                 Console.WriteLine();
+                Console.WriteLine("Press any key to continue...");
+                Console.ReadKey();
                 MenuChoices.StoreMenuChoices();
                 Console.SetCursorPosition(Console.WindowWidth / 2, 9);
                 menuChoice = Console.ReadLine();
@@ -119,6 +121,12 @@ namespace Book_Store_Interface
                         Console.WriteLine("Returning with no changes made.");
                         return;
                 }
+                Console.WriteLine();
+                Console.WriteLine("Press any key to continue...");
+                Console.ReadKey();
+                MenuChoices.EditStoreInventoryMenu();
+                Console.SetCursorPosition(Console.WindowWidth / 2, 7);
+                choice = Console.ReadLine();
             }
         }
 
@@ -209,7 +217,9 @@ namespace Book_Store_Interface
                 var selectedItem = stores.Inventories.FirstOrDefault(i => i.Isbn == isbn);
                 if (selectedItem != null && selectedItem.Isbn == isbn)
                 {
+                    context.Attach(selectedItem);
                     selectedItem.CurrentInventory = quantity;
+                    context.Entry(selectedItem).Property("CurrentInventory").IsModified = true;
                     context.SaveChanges();
                     TextCenter.CenterText("Inventory updated.");
                 }
