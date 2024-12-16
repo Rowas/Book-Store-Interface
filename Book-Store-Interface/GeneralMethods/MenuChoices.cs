@@ -49,7 +49,7 @@
             ClearConsole.ConsoleClear();
             TextCenter.CenterText("Store Menu");
             Console.WriteLine();
-            TextCenter.CenterText("1. Add Store Inventory");
+            TextCenter.CenterText("1. Add Book To Store Inventory");
             TextCenter.CenterText("2. Edit Store Inventory");
             TextCenter.CenterText("3. List Store Inventory");
             TextCenter.CenterText("4. List Stores Information");
@@ -65,6 +65,7 @@
             Console.WriteLine();
             TextCenter.CenterText("1. Edit Stock Levels");
             TextCenter.CenterText("2. Remove from Inventory");
+            TextCenter.CenterText("3. back");
             Console.WriteLine();
             TextCenter.CenterText("Enter your choice:");
         }

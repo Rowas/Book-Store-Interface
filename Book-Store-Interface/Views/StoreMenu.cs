@@ -33,8 +33,6 @@ namespace Book_Store_Interface
                         break;
                 }
                 Console.WriteLine();
-                Console.WriteLine("Press any key to continue...");
-                Console.ReadKey();
                 MenuChoices.StoreMenuChoices();
                 Console.SetCursorPosition(Console.WindowWidth / 2, 9);
                 menuChoice = Console.ReadLine();
@@ -104,20 +102,23 @@ namespace Book_Store_Interface
         private static void EditStoreInventory()
         {
             MenuChoices.EditStoreInventoryMenu();
-            Console.SetCursorPosition(Console.WindowWidth / 2, 8);
+            Console.SetCursorPosition(Console.WindowWidth / 2, 7);
             string choice = Console.ReadLine();
-            switch (choice)
+            while (choice != "3")
             {
-                case "1":
-                    EditStoreInventoryStock();
-                    break;
-                case "2":
-                    RemoveFromInventory();
-                    break;
-                default:
-                    Console.WriteLine("Invalid choice.");
-                    Console.WriteLine("Returning with no changes made.");
-                    return;
+                switch (choice)
+                {
+                    case "1":
+                        EditStoreInventoryStock();
+                        break;
+                    case "2":
+                        RemoveFromInventory();
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice.");
+                        Console.WriteLine("Returning with no changes made.");
+                        return;
+                }
             }
         }
 

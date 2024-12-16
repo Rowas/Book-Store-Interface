@@ -55,7 +55,6 @@ namespace Book_Store_Interface
                     Console.WriteLine("Use \"Author Menu\" to add the Author before adding a new book");
                     return;
                 }
-                //----------------------------------------------------------------------------------------------------------
                 Console.WriteLine();
                 Console.Write("Enter ISBN for the new book ( Format: ISBN13, no dashes ): ");
                 string isbn = Console.ReadLine();
