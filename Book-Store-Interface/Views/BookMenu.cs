@@ -57,7 +57,6 @@ namespace Book_Store_Interface
                     Console.WriteLine("Use \"Author Menu\" to add the Author before adding a new book");
                     return;
                 }
-                //----------------------------------------------------------------------------------------------------------
                 Console.WriteLine();
                 Console.Write("Enter ISBN for the new book ( Format: ISBN13, no dashes ): ");
                 string isbn = Console.ReadLine();
@@ -245,10 +244,18 @@ namespace Book_Store_Interface
                             context.SaveChanges();
                         }
                         break;
+                    case "5":
+                        selectedBook = ChangeBook();
+                        TextCenter.CenterText("Active book changed.");
+                        TextCenter.CenterText($"New active book is: {selectedBook.Title}");
+                        break;
                     default:
                         Console.WriteLine("Invalid choice. Please try again.");
                         break;
                 }
+                Console.WriteLine();
+                Console.WriteLine("Press any key to continue...");
+                Console.ReadKey();
                 MenuChoices.EditBookMenu();
                 TextCenter.CenterText($"Current Active Book: {selectedBook.Title}");
                 Console.WriteLine();
