@@ -66,6 +66,12 @@ namespace Book_Store_Interface
                     {
                         Console.Write("Enter ISBN for the new book ( Format: ISBN13, no dashes ): ");
                         isbn = Console.ReadLine();
+                        if (context.Books.Any(b => b.Isbn13 == isbn))
+                        {
+                            TextCenter.CenterText("Book already exists.");
+                            TextCenter.CenterText("Returning to menu.");
+                            return;
+                        }
                         if (isbn.Length == 13)
                         {
                             List<int> isbnValid = new List<int>();

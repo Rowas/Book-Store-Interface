@@ -43,46 +43,52 @@ namespace Book_Store_Interface
         {
             try
             {
-                ClearConsole.ConsoleClear();
-                TextCenter.CenterText("Add Author");
-                Console.WriteLine();
-                Console.Write("Enter author's first name: ");
-                string firstName = Console.ReadLine();
-                Console.Write("Enter author's middle initial (if any): ");
-                string middleInitial = Console.ReadLine();
-                string initial = string.IsNullOrWhiteSpace(middleInitial) ? null : middleInitial;
-                Console.Write("Enter author's last name: ");
-                string lastName = Console.ReadLine();
-                bool isParsed = false;
-                string birthDate;
-                DateOnly? parsedDate = null;
-                while (isParsed != true)
-                {
-                    DateOnly ignoreMe;
-                    Console.Write("Enter author's birth date and year (Format YYYY-MM-DD) or leave blank if unknown: ");
-                    birthDate = Console.ReadLine().ToLower();
-                    isParsed = DateOnly.TryParse(birthDate, out ignoreMe);
-                    if (isParsed == true)
-                    {
-                        parsedDate = string.IsNullOrWhiteSpace(birthDate) ? (DateOnly?)null : DateOnly.Parse(birthDate);
-                    }
-                    else if (isParsed = false && birthDate == null)
-                    {
-                        isParsed = true;
-                    }
-                    else
-                    {
-                        Console.WriteLine();
-                        Console.WriteLine("Invalid date format, or field not left blank.");
-                        Console.WriteLine("Try again.");
-                        Console.WriteLine();
-                    }
-
-                }
-                Console.Write("Is the author dead? ");
-                string isDead = Console.ReadLine();
                 using (var context = new Labb1BokhandelDemoContext())
                 {
+                    ClearConsole.ConsoleClear();
+                    TextCenter.CenterText("Add Author");
+                    Console.WriteLine();
+                    Console.Write("Enter author's first name: ");
+                    string firstName = Console.ReadLine();
+                    Console.Write("Enter author's middle initial (if any): ");
+                    string middleInitial = Console.ReadLine();
+                    string initial = string.IsNullOrWhiteSpace(middleInitial) ? null : middleInitial;
+                    Console.Write("Enter author's last name: ");
+                    string lastName = Console.ReadLine();
+                    if (context.Authors.Any(a => a.FirstName == firstName && a.Initial == initial && a.LastName == lastName || a.FirstName == firstName && a.LastName == lastName))
+                    {
+                        TextCenter.CenterText("Author already exists");
+                        TextCenter.CenterText("Returning to menu.");
+                        return;
+                    }
+                    bool isParsed = false;
+                    string birthDate;
+                    DateOnly? parsedDate = null;
+                    while (isParsed != true)
+                    {
+                        DateOnly ignoreMe;
+                        Console.Write("Enter author's birth date and year (Format YYYY-MM-DD) or leave blank if unknown: ");
+                        birthDate = Console.ReadLine().ToLower();
+                        isParsed = DateOnly.TryParse(birthDate, out ignoreMe);
+                        if (isParsed == true)
+                        {
+                            parsedDate = string.IsNullOrWhiteSpace(birthDate) ? (DateOnly?)null : DateOnly.Parse(birthDate);
+                        }
+                        else if (isParsed = false && birthDate == null)
+                        {
+                            isParsed = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine("Invalid date format, or field not left blank.");
+                            Console.WriteLine("Try again.");
+                            Console.WriteLine();
+                        }
+
+                    }
+                    Console.Write("Is the author dead? ");
+                    string isDead = Console.ReadLine();
                     var author = new Author
                     {
                         FirstName = firstName,
