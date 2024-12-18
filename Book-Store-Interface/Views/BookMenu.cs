@@ -243,97 +243,16 @@ namespace Book_Store_Interface
                     switch (choice)
                     {
                         case "1":
-                            using (var context = new Labb1BokhandelDemoContext())
-                            {
-                                Console.WriteLine();
-                                ListPublishers.ListPublisher();
-                                Console.WriteLine($"Current Publisher: {context.Publishers.Find(selectedBook.PublisherId).Name}");
-                                context.Attach(selectedBook);
-                                Console.Write("Enter new Publisher ID from list above: ");
-                                int pubID = int.Parse(Console.ReadLine());
-                                selectedBook.PublisherId = pubID;
-                                context.Entry(selectedBook).Property("PublisherID").IsModified = true;
-                                Console.WriteLine();
-                                Console.WriteLine("Book updated. ");
-                                context.SaveChanges();
-                            }
+                            ChangeAuthor(selectedBook);
                             break;
                         case "2":
-                            using (var context = new Labb1BokhandelDemoContext())
-                            {
-                                Console.WriteLine();
-                                Console.WriteLine($"Edit price of {selectedBook.Title}");
-                                Console.WriteLine($"Current price: {selectedBook.Price}");
-                                context.Attach(selectedBook);
-                                Console.Write("Enter new price: ");
-                                int newPrice = int.Parse(Console.ReadLine());
-                                selectedBook.Price = newPrice;
-                                context.Entry(selectedBook).Property("Price").IsModified = true;
-                                Console.WriteLine();
-                                Console.WriteLine("Book updated. ");
-                                context.SaveChanges();
-                            }
+                            ChangePrice(selectedBook);
                             break;
                         case "3":
-                            using (var context = new Labb1BokhandelDemoContext())
-                            {
-                                Console.WriteLine();
-                                Console.WriteLine($"Add author to book {selectedBook.Title}");
-                                Console.WriteLine();
-                                ListAuthors.ListAuthor();
-                                Console.Write($"Enter ID of author from list above to add as author of {selectedBook.Title}: ");
-                                int aaID = int.Parse(Console.ReadLine());
-                                var addBookAuthor = context.BooksAuthors.FirstOrDefault(ba => ba.BooksId == isbn && ba.AuthorsId == aaID);
-                                if (addBookAuthor != null)
-                                {
-                                    Console.WriteLine("Author already associated with selected book.");
-                                    Console.WriteLine("Returning with no changes made. ");
-                                    return;
-                                }
-                                else
-                                {
-                                    var authorbook = new BooksAuthor
-                                    {
-                                        AuthorsId = aaID,
-                                        BooksId = isbn
-                                    };
-                                    context.BooksAuthors.Add(authorbook);
-                                }
-                                Console.WriteLine();
-                                Console.WriteLine("Book updated. ");
-                                context.SaveChanges();
-                            }
+                            AddAuthor(selectedBook, isbn);
                             break;
                         case "4":
-                            using (var context = new Labb1BokhandelDemoContext())
-                            {
-                                Console.WriteLine();
-                                Console.WriteLine($"Add author to book {selectedBook.Title}");
-                                Console.WriteLine();
-                                ListAuthors.ListAuthor();
-                                Console.Write($"Enter ID of author from list above to remove as author of {selectedBook.Title}: ");
-                                int raID = int.Parse(Console.ReadLine());
-                                var removeBookAuthor = context.BooksAuthors.FirstOrDefault(ba => ba.BooksId == isbn && ba.AuthorsId == raID);
-                                if (removeBookAuthor == null)
-                                {
-                                    Console.WriteLine();
-                                    Console.WriteLine($"Author not associated with {selectedBook.Title}. ");
-                                    Console.WriteLine("Returning with no changes made. ");
-                                    return;
-                                }
-                                else
-                                {
-                                    context.Remove(removeBookAuthor);
-                                    if (context.BooksAuthors.Where(ba => ba.BooksId == isbn).ToString().Length == 0)
-                                    {
-                                        Console.WriteLine($"No Author(s) associated with {selectedBook.Title}.");
-                                        Console.WriteLine("Consider adding an author.");
-                                    }
-                                }
-                                Console.WriteLine();
-                                Console.WriteLine("Book updated. ");
-                                context.SaveChanges();
-                            }
+                            RemoveAuthor(selectedBook, isbn);
                             break;
                         case "5":
                             selectedBook = ChangeBook();
@@ -343,6 +262,11 @@ namespace Book_Store_Interface
                         default:
                             Console.WriteLine("Invalid choice. Please try again.");
                             break;
+                    }
+                    if (choice == "1" || choice == "2" || choice == "3" || choice == "4")
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("Book updated. ");
                     }
                     Console.WriteLine();
                     Console.WriteLine("Press any key to continue...");
@@ -359,7 +283,98 @@ namespace Book_Store_Interface
                 Console.WriteLine("Something went wrong, Please try again. ");
             }
         }
+        private static void ChangeAuthor(Book? selectedBook)
+        {
+            using (var context = new Labb1BokhandelDemoContext())
+            {
+                Console.WriteLine();
+                ListPublishers.ListPublisher();
+                Console.WriteLine($"Current Publisher: {context.Publishers.Find(selectedBook.PublisherId).Name}");
+                context.Attach(selectedBook);
+                Console.Write("Enter new Publisher ID from list above: ");
+                int pubID = int.Parse(Console.ReadLine());
+                selectedBook.PublisherId = pubID;
+                context.Entry(selectedBook).Property("PublisherID").IsModified = true;
+                context.SaveChanges();
+            }
+        }
 
+        private static void ChangePrice(Book? selectedBook)
+        {
+            using (var context = new Labb1BokhandelDemoContext())
+            {
+                Console.WriteLine();
+                Console.WriteLine($"Edit price of {selectedBook.Title}");
+                Console.WriteLine($"Current price: {selectedBook.Price}");
+                context.Attach(selectedBook);
+                Console.Write("Enter new price: ");
+                int newPrice = int.Parse(Console.ReadLine());
+                selectedBook.Price = newPrice;
+                context.Entry(selectedBook).Property("Price").IsModified = true;
+                context.SaveChanges();
+            }
+        }
+
+        private static void AddAuthor(Book? selectedBook, string isbn)
+        {
+            using (var context = new Labb1BokhandelDemoContext())
+            {
+                Console.WriteLine();
+                Console.WriteLine($"Add author to book {selectedBook.Title}");
+                Console.WriteLine();
+                ListAuthors.ListAuthor();
+                Console.Write($"Enter ID of author from list above to add as author of {selectedBook.Title}: ");
+                int aaID = int.Parse(Console.ReadLine());
+                var addBookAuthor = context.BooksAuthors.FirstOrDefault(ba => ba.BooksId == isbn && ba.AuthorsId == aaID);
+                if (addBookAuthor != null)
+                {
+                    Console.WriteLine("Author already associated with selected book.");
+                    Console.WriteLine("Returning with no changes made. ");
+                    return;
+                }
+                else
+                {
+                    var authorbook = new BooksAuthor
+                    {
+                        AuthorsId = aaID,
+                        BooksId = isbn
+                    };
+                    context.BooksAuthors.Add(authorbook);
+                }
+                context.SaveChanges();
+            }
+        }
+
+        private static void RemoveAuthor(Book? selectedBook, string isbn)
+        {
+            using (var context = new Labb1BokhandelDemoContext())
+            {
+                Console.WriteLine();
+                Console.WriteLine($"Add author to book {selectedBook.Title}");
+                Console.WriteLine();
+                ListAuthors.ListAuthor();
+                Console.Write($"Enter ID of author from list above to remove as author of {selectedBook.Title}: ");
+                int raID = int.Parse(Console.ReadLine());
+                var removeBookAuthor = context.BooksAuthors.FirstOrDefault(ba => ba.BooksId == isbn && ba.AuthorsId == raID);
+                if (removeBookAuthor == null)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine($"Author not associated with {selectedBook.Title}. ");
+                    Console.WriteLine("Returning with no changes made. ");
+                    return;
+                }
+                else
+                {
+                    context.Remove(removeBookAuthor);
+                    if (context.BooksAuthors.Where(ba => ba.BooksId == isbn).ToString().Length == 0)
+                    {
+                        Console.WriteLine($"No Author(s) associated with {selectedBook.Title}.");
+                        Console.WriteLine("Consider adding an author.");
+                    }
+                }
+                context.SaveChanges();
+            }
+        }
         private static Book? ChangeBook()
         {
             try
