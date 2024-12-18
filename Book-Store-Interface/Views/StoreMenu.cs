@@ -60,15 +60,23 @@ namespace Book_Store_Interface
 
         private static void AddToInventory(int storeId)
         {
-            ListBooks.ListBook();
-            Console.WriteLine();
-            Console.Write("Enter ISBN from above list of books currently in Database: ");
-            var isbn = Console.ReadLine();
-            Console.Write("Enter quantity to add: ");
-            int quantity = int.Parse(Console.ReadLine());
-            Console.WriteLine("");
             using (var context = new Labb1BokhandelDemoContext())
             {
+                if (context.Stores.Find(storeId) == null)
+                {
+                    Console.WriteLine();
+                    TextCenter.CenterText("Store not found.");
+                    TextCenter.CenterText("Returning to menu.");
+                    Console.WriteLine();
+                    return;
+                }
+                ListBooks.ListBook();
+                Console.WriteLine();
+                Console.Write("Enter ISBN from above list of books currently in Database: ");
+                var isbn = Console.ReadLine();
+                Console.Write("Enter quantity to add: ");
+                int quantity = int.Parse(Console.ReadLine());
+                Console.WriteLine("");
                 var stores = context.Stores.Include(s => s.Inventories).Where(s => s.Id == storeId).FirstOrDefault();
                 var isbncheck = stores.Inventories.FirstOrDefault(i => i.Isbn == isbn);
                 if (isbncheck != null)
