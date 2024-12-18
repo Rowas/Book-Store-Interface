@@ -41,77 +41,143 @@ namespace Book_Store_Interface
 
         public static void AddAuthor()
         {
-            ClearConsole.ConsoleClear();
-            TextCenter.CenterText("Add Author");
-            Console.WriteLine();
-            Console.Write("Enter author's first name: ");
-            string firstName = Console.ReadLine();
-            Console.Write("Enter author's middle initial (if any): ");
-            string middleInitial = Console.ReadLine();
-            string initial = string.IsNullOrWhiteSpace(middleInitial) ? null : middleInitial;
-            Console.Write("Enter author's last name: ");
-            string lastName = Console.ReadLine();
-            Console.Write("Enter author's birth date and year (Format YYYY-MM-DD) or leave blank if unknown: ");
-            string birthDate = Console.ReadLine().ToLower();
-            DateOnly? parsedDate = string.IsNullOrWhiteSpace(birthDate) ? (DateOnly?)null : DateOnly.Parse(birthDate);
-            Console.Write("Is the author dead? ");
-            string isDead = Console.ReadLine();
-            using (var context = new Labb1BokhandelDemoContext())
+            try
             {
-                var author = new Author
+                ClearConsole.ConsoleClear();
+                TextCenter.CenterText("Add Author");
+                Console.WriteLine();
+                Console.Write("Enter author's first name: ");
+                string firstName = Console.ReadLine();
+                Console.Write("Enter author's middle initial (if any): ");
+                string middleInitial = Console.ReadLine();
+                string initial = string.IsNullOrWhiteSpace(middleInitial) ? null : middleInitial;
+                Console.Write("Enter author's last name: ");
+                string lastName = Console.ReadLine();
+                bool isParsed = false;
+                string birthDate;
+                DateOnly? parsedDate = null;
+                while (isParsed != true)
                 {
-                    FirstName = firstName,
-                    Initial = initial,
-                    LastName = lastName,
-                    BirthDate = parsedDate,
-                    IsDead = isDead.ToLower() == "yes" ? true : false
-                };
-                context.Authors.Add(author);
-                TextCenter.CenterText("Author added.");
-                context.SaveChanges();
+                    DateOnly ignoreMe;
+                    Console.Write("Enter author's birth date and year (Format YYYY-MM-DD) or leave blank if unknown: ");
+                    birthDate = Console.ReadLine().ToLower();
+                    isParsed = DateOnly.TryParse(birthDate, out ignoreMe);
+                    if (isParsed == true)
+                    {
+                        parsedDate = string.IsNullOrWhiteSpace(birthDate) ? (DateOnly?)null : DateOnly.Parse(birthDate);
+                    }
+                    else if (isParsed = false && birthDate == null)
+                    {
+                        isParsed = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("Invalid date format, or field not left blank.");
+                        Console.WriteLine("Try again.");
+                        Console.WriteLine();
+                    }
+
+                }
+                Console.Write("Is the author dead? ");
+                string isDead = Console.ReadLine();
+                using (var context = new Labb1BokhandelDemoContext())
+                {
+                    var author = new Author
+                    {
+                        FirstName = firstName,
+                        Initial = initial,
+                        LastName = lastName,
+                        BirthDate = parsedDate,
+                        IsDead = isDead.ToLower() == "yes" ? true : false
+                    };
+                    context.Authors.Add(author);
+                    TextCenter.CenterText("Author added.");
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Something went wrong, Please try again. ");
             }
         }
 
         private static void EditAuthor()
         {
-            ClearConsole.ConsoleClear();
-            TextCenter.CenterText("Edit Author");
-            ListAuthors.ListAuthor();
-            Console.WriteLine();
-            Console.Write("Enter author's first name: ");
-            string firstName = Console.ReadLine();
-            Console.Write("Enter author's last name: ");
-            string lastName = Console.ReadLine();
-            using (var context = new Labb1BokhandelDemoContext())
+            try
             {
-                var author = context.Authors.FirstOrDefault(a => a.FirstName == firstName && a.LastName == lastName);
-                if (author == null)
+                using (var context = new Labb1BokhandelDemoContext())
                 {
-                    TextCenter.CenterText("Author not found.");
-                }
-                else
-                {
-                    Console.WriteLine($"Current status: {author.IsDead}");
-                    Console.WriteLine("Update death status?");
-                    string deathStatus = Console.ReadLine();
-                    switch (deathStatus.ToLower())
+                    ClearConsole.ConsoleClear();
+                    TextCenter.CenterText("Edit Author");
+                    ListAuthors.ListAuthor();
+                    Console.WriteLine();
+                    Console.Write("Enter ID of the author from the list above: ");
+                    int bookAuthor = int.Parse(Console.ReadLine());
+                    var foundAuthor = context.Authors.Find(bookAuthor);
+                    if (foundAuthor == null)
                     {
-                        case "yes":
-                            author.IsDead = !author.IsDead;
-                            context.SaveChanges();
-                            TextCenter.CenterText("Author updated.");
-                            break;
-                        default:
-                            TextCenter.CenterText("Returning with no changes.");
-                            break;
+                        TextCenter.CenterText("Author not found.");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Current status: {foundAuthor.IsDead}");
+                        Console.WriteLine("Update death status?");
+                        string deathStatus = Console.ReadLine();
+                        switch (deathStatus.ToLower())
+                        {
+                            case "yes":
+                                foundAuthor.IsDead = !foundAuthor.IsDead;
+                                context.SaveChanges();
+                                TextCenter.CenterText("Author updated.");
+                                break;
+                            default:
+                                TextCenter.CenterText("Returning with no changes.");
+                                break;
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Something went wrong, Please try again. ");
             }
         }
 
         private static void DeleteAuthor()
         {
-
+            try
+            {
+                using (var context = new Labb1BokhandelDemoContext())
+                {
+                    ClearConsole.ConsoleClear();
+                    TextCenter.CenterText("Edit Author");
+                    ListAuthors.ListAuthor();
+                    Console.WriteLine();
+                    Console.Write("Enter ID of the author from the list above: ");
+                    int bookAuthor = int.Parse(Console.ReadLine());
+                    var foundAuthor = context.Authors.Find(bookAuthor);
+                    if (foundAuthor == null)
+                    {
+                        TextCenter.CenterText("Author not found.");
+                    }
+                    else if (context.BooksAuthors.Where(ba => ba.AuthorsId == foundAuthor.Id).Count() > 0)
+                    {
+                        TextCenter.CenterText("Author have books associated with him/her.");
+                        TextCenter.CenterText("Please remove all books associated with the author before removing the author.");
+                    }
+                    else
+                    {
+                        TextCenter.CenterText("Author removed successfully");
+                        context.Remove(foundAuthor);
+                        context.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Something went wrong, Please try again. ");
+            }
         }
     }
 }

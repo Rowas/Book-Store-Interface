@@ -33,8 +33,6 @@ internal class Program
                     break;
             }
             Console.WriteLine();
-            Console.WriteLine("Press any key to continue...");
-            Console.ReadKey();
             MenuChoices.PrintMenu();
             Console.SetCursorPosition(Console.WindowWidth / 2, 10);
             menuChoice = Console.ReadLine();

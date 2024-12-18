@@ -42,77 +42,98 @@ namespace Book_Store_Interface.Views
 
         private static void AddPublisher()
         {
-            ClearConsole.ConsoleClear();
-            TextCenter.CenterText("Add Publisher");
-            Console.WriteLine();
-            Console.Write("Enter name of new publisher: ");
-            var pubName = Console.ReadLine();
-            Console.Write("Enter contact email to new publisher: ");
-            var pubEmail = Console.ReadLine();
-            using (var context = new Labb1BokhandelDemoContext())
+            try
             {
-                var publisher = new Publisher
+                ClearConsole.ConsoleClear();
+                TextCenter.CenterText("Add Publisher");
+                Console.WriteLine();
+                Console.Write("Enter name of new publisher: ");
+                var pubName = Console.ReadLine();
+                Console.Write("Enter contact email to new publisher: ");
+                var pubEmail = Console.ReadLine();
+                using (var context = new Labb1BokhandelDemoContext())
                 {
-                    Name = pubName,
-                    ContactEmail = pubEmail
-                };
-                context.Publishers.Add(publisher);
-                TextCenter.CenterText("Publisher added.");
-                context.SaveChanges();
+                    var publisher = new Publisher
+                    {
+                        Name = pubName,
+                        ContactEmail = pubEmail
+                    };
+                    context.Publishers.Add(publisher);
+                    TextCenter.CenterText("Publisher added.");
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Something went wrong, Please try again. ");
             }
         }
 
         private static void EditPublisher()
         {
-            ClearConsole.ConsoleClear();
-            TextCenter.CenterText("Edit Publisher");
-            ListPublishers.ListPublisher();
-            Console.WriteLine();
-            Console.Write("Enter ID of publisher to change: ");
-            int pubID = int.Parse(Console.ReadLine());
-            using (var context = new Labb1BokhandelDemoContext())
+            try
             {
-                var publisher = context.Publishers.Find(pubID);
-                if (publisher == null) TextCenter.CenterText("Publisher not found.");
-                else
+                ClearConsole.ConsoleClear();
+                TextCenter.CenterText("Edit Publisher");
+                ListPublishers.ListPublisher();
+                Console.WriteLine();
+                Console.Write("Enter ID of publisher to change: ");
+                int pubID = int.Parse(Console.ReadLine());
+                using (var context = new Labb1BokhandelDemoContext())
                 {
-                    Console.WriteLine();
-                    Console.WriteLine($"Current E-Mail: {publisher.ContactEmail}");
-                    Console.Write("Enter new contact E-Mail to publisher: ");
-                    var pubEmail = Console.ReadLine();
-                    if (pubEmail == null || pubEmail.Contains("@") == false)
+                    var publisher = context.Publishers.Find(pubID);
+                    if (publisher == null) TextCenter.CenterText("Publisher not found.");
+                    else
                     {
                         Console.WriteLine();
-                        Console.WriteLine("No value entered or invalid email entered.");
-                        Console.Write("Returning to menu.");
+                        Console.WriteLine($"Current E-Mail: {publisher.ContactEmail}");
+                        Console.Write("Enter new contact E-Mail to publisher: ");
+                        var pubEmail = Console.ReadLine();
+                        if (pubEmail == null || pubEmail.Contains("@") == false)
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine("No value entered or invalid email entered.");
+                            Console.Write("Returning to menu.");
+                            Console.WriteLine();
+                            return;
+                        }
+                        publisher.ContactEmail = pubEmail;
+                        context.SaveChanges();
                         Console.WriteLine();
-                        return;
+                        TextCenter.CenterText($"Publisher E-Mail updated.");
                     }
-                    publisher.ContactEmail = pubEmail;
-                    context.SaveChanges();
-                    Console.WriteLine();
-                    TextCenter.CenterText($"Publisher E-Mail updated.");
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Something went wrong, Please try again. ");
             }
         }
 
         private static void DeletePublisher()
         {
-            ClearConsole.ConsoleClear();
-            TextCenter.CenterText("Delete Publisher");
-            ListPublishers.ListPublisher();
-            Console.WriteLine();
-            Console.Write("Enter ID of publisher to delete: ");
-            int pubID = int.Parse(Console.ReadLine());
-            if (pubID == 1) { Console.WriteLine("Default publisher not removable"); Console.WriteLine("Returning to menu."); return; }
-            using (var context = new Labb1BokhandelDemoContext())
+            try
             {
-                var publisher = context.Publishers.Find(pubID);
-                if (publisher == null) { TextCenter.CenterText("Publisher not found."); TextCenter.CenterText("Returning to menu."); return; }
-                context.Publishers.Remove(publisher);
-                context.SaveChanges();
+                ClearConsole.ConsoleClear();
+                TextCenter.CenterText("Delete Publisher");
+                ListPublishers.ListPublisher();
                 Console.WriteLine();
-                Console.WriteLine("Publisher sucessfully removed.");
+                Console.Write("Enter ID of publisher to delete: ");
+                int pubID = int.Parse(Console.ReadLine());
+                if (pubID == 1) { Console.WriteLine("Default publisher not removable"); Console.WriteLine("Returning to menu."); return; }
+                using (var context = new Labb1BokhandelDemoContext())
+                {
+                    var publisher = context.Publishers.Find(pubID);
+                    if (publisher == null) { TextCenter.CenterText("Publisher not found."); TextCenter.CenterText("Returning to menu."); return; }
+                    context.Publishers.Remove(publisher);
+                    context.SaveChanges();
+                    Console.WriteLine();
+                    Console.WriteLine("Publisher sucessfully removed.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Something went wrong, Please try again. ");
             }
         }
     }
