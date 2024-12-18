@@ -168,6 +168,14 @@ namespace Book_Store_Interface
             {
                 using (var context = new Labb1BokhandelDemoContext())
                 {
+                    if (context.Stores.Find(storeId) == null)
+                    {
+                        Console.WriteLine();
+                        TextCenter.CenterText("Store not found.");
+                        TextCenter.CenterText("Returning to menu.");
+                        Console.WriteLine();
+                        return null;
+                    }
                     var stores = context.Stores.Include(s => s.Inventories).Where(s => s.Id == storeId).FirstOrDefault();
                     var books = context.Books.Include(b => b.BooksAuthors).ThenInclude(ba => ba.Authors).ToList();
                     ClearConsole.ConsoleClear();
@@ -212,6 +220,14 @@ namespace Book_Store_Interface
                 int storeId = int.Parse(Console.ReadLine());
                 using (var context = new Labb1BokhandelDemoContext())
                 {
+                    if (context.Stores.Find(storeId) == null)
+                    {
+                        Console.WriteLine();
+                        TextCenter.CenterText("Store not found.");
+                        TextCenter.CenterText("Returning to menu.");
+                        Console.WriteLine();
+                        return;
+                    }
                     var stores = InventoryList(storeId);
                     Console.WriteLine();
                     Console.WriteLine();
@@ -246,6 +262,14 @@ namespace Book_Store_Interface
                 int storeId = int.Parse(Console.ReadLine());
                 using (var context = new Labb1BokhandelDemoContext())
                 {
+                    if (context.Stores.Find(storeId) == null)
+                    {
+                        Console.WriteLine();
+                        TextCenter.CenterText("Store not found.");
+                        TextCenter.CenterText("Returning to menu.");
+                        Console.WriteLine();
+                        return;
+                    }
                     var stores = InventoryList(storeId);
                     Console.WriteLine();
                     Console.Write("Enter book ISBN to edit: ");
