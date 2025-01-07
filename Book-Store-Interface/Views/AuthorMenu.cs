@@ -77,6 +77,7 @@ namespace Book_Store_Interface
                         else if (isParsed == false && birthDate == null)
                         {
                             isParsed = true;
+                            parsedDate = null;
                         }
                         else
                         {
