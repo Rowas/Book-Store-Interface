@@ -79,6 +79,7 @@ namespace Book_Store_Interface
                 Console.WriteLine("");
                 var stores = context.Stores.Include(s => s.Inventories).Where(s => s.Id == storeId).FirstOrDefault();
                 var isbncheck = stores.Inventories.FirstOrDefault(i => i.Isbn == isbn);
+                var bookcheck = context.Books.FirstOrDefault(i => i.Isbn13 == isbn);
                 if (isbncheck != null)
                 {
                     Console.WriteLine($"Title already in inventory, do you wish to update the inventory with the requested amount of {quantity}? (yes / no)");
@@ -96,7 +97,7 @@ namespace Book_Store_Interface
                             break;
                     }
                 }
-                else if (isbncheck != null && isbncheck.Isbn == isbn)
+                else if (isbncheck == null && bookcheck.Isbn13 == isbn)
                 {
                     var inventory = new Inventory
                     {
