@@ -50,6 +50,7 @@ public partial class Labb1BokhandelDemoContext : DbContext
         }.ToString();
 
         optionsBuilder.UseSqlServer(connectionString);
+        optionsBuilder.EnableSensitiveDataLogging();
 
     }
 

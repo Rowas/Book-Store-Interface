@@ -81,7 +81,7 @@ namespace Book_Store_Interface
                 var isbncheck = stores.Inventories.FirstOrDefault(i => i.Isbn == isbn);
                 if (isbncheck != null)
                 {
-                    Console.WriteLine($"Title already in inventory, do you wish to update the inventory with the requested amount of {quantity}?");
+                    Console.WriteLine($"Title already in inventory, do you wish to update the inventory with the requested amount of {quantity}? (yes / no)");
                     var response = Console.ReadLine();
                     switch (response.ToLower())
                     {
@@ -214,6 +214,7 @@ namespace Book_Store_Interface
         {
             try
             {
+                Book_Store_Interface.Model.Store stores;
                 ListStores.ListStore();
                 Console.WriteLine();
                 Console.Write("Enter store ID: ");
@@ -228,7 +229,10 @@ namespace Book_Store_Interface
                         Console.WriteLine();
                         return;
                     }
-                    var stores = InventoryList(storeId);
+                    stores = InventoryList(storeId);
+                }
+                using (var context = new Labb1BokhandelDemoContext())
+                {
                     Console.WriteLine();
                     Console.WriteLine();
                     Console.Write("Enter book ISBN to remove: ");
@@ -280,7 +284,6 @@ namespace Book_Store_Interface
                     var selectedItem = stores.Inventories.FirstOrDefault(i => i.Isbn == isbn);
                     if (selectedItem != null && selectedItem.Isbn == isbn)
                     {
-                        context.Attach(selectedItem);
                         selectedItem.CurrentInventory = quantity;
                         context.Entry(selectedItem).Property("CurrentInventory").IsModified = true;
                         context.SaveChanges();
