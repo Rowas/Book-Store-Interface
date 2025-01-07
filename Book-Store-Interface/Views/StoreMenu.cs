@@ -215,7 +215,7 @@ namespace Book_Store_Interface
         {
             try
             {
-                Book_Store_Interface.Model.Store stores;
+                Store stores;
                 ListStores.ListStore();
                 Console.WriteLine();
                 Console.Write("Enter store ID: ");

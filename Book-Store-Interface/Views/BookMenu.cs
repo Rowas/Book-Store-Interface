@@ -171,7 +171,7 @@ namespace Book_Store_Interface
                     }
                     ListPublishers.ListPublisher();
                     Console.WriteLine();
-                    Console.Write("Enter ID of the Publisher from above list (if not in list, leave blank): ");
+                    Console.Write("Enter ID of the Publisher from above list (if not in list, enter \"1\"): ");
                     var publisherID = int.Parse(Console.ReadLine());
                     int pubID;
                     var foundPublisher = context.Publishers.Find(publisherID);

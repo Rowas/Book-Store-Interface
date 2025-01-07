@@ -74,7 +74,7 @@ namespace Book_Store_Interface
                         {
                             parsedDate = string.IsNullOrWhiteSpace(birthDate) ? (DateOnly?)null : DateOnly.Parse(birthDate);
                         }
-                        else if (isParsed = false && birthDate == null)
+                        else if (isParsed == false && birthDate == null)
                         {
                             isParsed = true;
                         }
